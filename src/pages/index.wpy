@@ -78,7 +78,7 @@
 
     <toast />
 
-    <view class="zan-btn">按钮</view>
+    <view class="zan-btn zan-btn--warn">按钮</view>
 
 
   </view>
