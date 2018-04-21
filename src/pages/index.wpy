@@ -77,6 +77,10 @@
     </panel>
 
     <toast />
+
+    <view class="zan-btn">按钮</view>
+
+
   </view>
 </template>
 
