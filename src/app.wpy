@@ -23,12 +23,13 @@ setStore(store);
 
 export default class extends wepy.app {
   config = {
-    pages: ['pages/index', 'pages/contacts'],
+    pages: ['pages/index', 'pages/contacts', 'pages/panel'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: 'Upbeat',
       navigationBarTextStyle: 'black'
+      // enablePullDownRefresh: true
     },
     tabBar: {
       color: '#929292',
@@ -47,6 +48,12 @@ export default class extends wepy.app {
           text: 'Contacts',
           iconPath: 'assets/images/contacts-outline.png',
           selectedIconPath: 'assets/images/contacts-selected.png'
+        },
+        {
+          pagePath: 'pages/panel',
+          text: 'Panel',
+          iconPath: 'assets/images/settings-outline.png',
+          selectedIconPath: 'assets/images/settings-selected.png'
         }
       ]
     }
@@ -63,6 +70,15 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.testAsync();
+  }
+
+  onPageNotFound(res) {
+    wx.redirectTo({
+      url: 'pages/index',
+      success: function(res){
+        // success
+      }
+    })
   }
 
   sleep(s) {

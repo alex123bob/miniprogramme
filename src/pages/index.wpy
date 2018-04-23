@@ -79,7 +79,7 @@
     <toast />
 
     <view class="zan-btn zan-btn--warn">按钮</view>
-
+    <navigator url="contacts" hover-class="navigator-hover" open-type="switchTab">跳转到About</navigator>
 
   </view>
 </template>
@@ -111,7 +111,7 @@
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: 'test'
+      navigationBarTitleText: 'Home'
     }
     components = {
       panel: Panel,
