@@ -23,7 +23,7 @@ setStore(store);
 
 export default class extends wepy.app {
   config = {
-    pages: ['pages/index', 'pages/contacts', 'pages/panel'],
+    pages: ['pages/home', 'pages/contacts', 'pages/panel'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -38,7 +38,7 @@ export default class extends wepy.app {
       borderStyle: 'white',
       list: [
         {
-          pagePath: 'pages/index',
+          pagePath: 'pages/home',
           text: 'Home',
           iconPath: 'assets/images/home-outline.png',
           selectedIconPath: 'assets/images/home-selected.png'
