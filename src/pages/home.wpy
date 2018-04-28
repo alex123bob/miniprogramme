@@ -51,9 +51,9 @@ export default class extends wepy.page {
     decodeUserInfo() {
         let that = this
         wx.request({
-            url: that.API_SERVER + '/decrypt.php',
+            url: that.API_SERVER + 'decrypt.php',
             data: {
-                encryptedData: that.data.encryptedData,
+                encryptedData: that.data.auth.encryptedData,
                 iv: that.data.auth.iv,
                 session: wx.getStorageSync('sessionId')
             },
