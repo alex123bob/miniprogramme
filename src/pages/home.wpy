@@ -5,16 +5,25 @@
                 Keep Fit
             </view>
         </panel>
+
+        <panel>
+            <text class="info">{{weRun.step}}</text>
+        </panel>
     </view>
 </template>
 
 <script>
 import wepy from 'wepy'
+import Panel from '../components/panel' // alias example
 import ServerConfig from '../mixins/server_config'
 
 export default class extends wepy.page {
     config = {
         navigationBarTitleText: 'Home'
+    }
+
+    components = {
+        panel: Panel
     }
 
     mixins = [ServerConfig]
@@ -73,7 +82,6 @@ export default class extends wepy.page {
       success: function(res) {
         let code = res.code
         me.$apply(() => {
-            console.log(me === this)
             me.data.auth.code = code
         })
         wx.getWeRunData({
