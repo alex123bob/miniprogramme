@@ -10,6 +10,8 @@
             <text slot="title">微信步数</text>
             <text class="info" slot="content">{{weRun.step}}</text>
         </panel>
+
+        <tabbar></tabbar>
     </view>
 </template>
 
@@ -17,6 +19,7 @@
 import wepy from 'wepy'
 import Panel from '../components/panel' // alias example
 import ServerConfig from '../mixins/server_config'
+import Tabbar from '../example/navbar'
 
 export default class extends wepy.page {
     config = {
@@ -24,7 +27,8 @@ export default class extends wepy.page {
     }
 
     components = {
-        panel: Panel
+        panel: Panel,
+        tabbar: Tabbar
     }
 
     mixins = [ServerConfig]
