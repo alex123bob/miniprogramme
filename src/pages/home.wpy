@@ -10,8 +10,6 @@
             <text slot="title">微信步数</text>
             <text class="info" slot="content">{{weRun.step}}</text>
         </panel>
-
-        <zantab tab="zanTab" componentId="tabHome"></zantab>
     </view>
 </template>
 
@@ -19,7 +17,6 @@
 import wepy from 'wepy'
 import Panel from '../components/panel' // alias example
 import ServerConfig from '../mixins/server_config'
-import ZanTab from '../zanui/tab/index'
 
 export default class extends wepy.page {
     config = {
@@ -27,8 +24,7 @@ export default class extends wepy.page {
     }
 
     components = {
-        panel: Panel,
-        zantab: ZanTab
+        panel: Panel
     }
 
     mixins = [ServerConfig]
@@ -42,37 +38,6 @@ export default class extends wepy.page {
         },
         weRun: {
             step: 0
-        },
-        zanTab: {
-            list: [
-                {
-                    id: '1',
-                    title: '最新商品1'
-                },
-                {
-                    id: '2',
-                    title: '最新商品2'
-                },
-                {
-                    id: '3',
-                    title: '最新商品3'
-                },
-                {
-                    id: '4',
-                    title: '最新商品4'
-                },
-                {
-                    id: '5',
-                    title: '最新商品5'
-                },
-                {
-                    id: '6',
-                    title: '最新商品6'
-                }
-            ],
-            selectedId: '1',
-            scroll: true,
-            height: 45
         }
     }
 
