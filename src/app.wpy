@@ -1,5 +1,5 @@
 <style lang="less">
-
+@import "./style/weui.less";
 .container {
   height: 100%;
   display: flex;
@@ -65,6 +65,7 @@ export default class extends wepy.app {
   constructor() {
     super();
     this.use('requestfix');
+    this.use('promisify');
   }
 
   onLaunch() {
