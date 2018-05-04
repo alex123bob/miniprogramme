@@ -8,7 +8,7 @@
 
         <panel>
             <text slot="title">微信步数</text>
-            <text class="info" slot="content">{{weRun.step}}</text>
+            <text class="info" slot="content">{{steps}}</text>
         </panel>
     </view>
 </template>
@@ -32,74 +32,59 @@ export default class WeRun extends wepy.component {
             iv: undefined,
             sessionId: undefined
         },
-        weRun: {
-            step: 0
+        steps: 0
+    }
+
+    events = {
+        'home-page-displayed': (...args) => {
+            this.getUserStep()
         }
     }
 
     methods = {
     }
 
-    get3rdSession = () => {
+    get3rdSession = async () => {
         let that = this
-        wx.request({
+        let { data } = await wepy.request({
             url: that.API_SERVER + 'login.php',
             data: {
-                code: this.auth.code
+                code: that.auth.code
             },
-            method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            success: function(res) {
-                var sessionId = res.data
-                that.auth.sessionId = sessionId
-                wx.setStorageSync('sessionId', sessionId)
-                that.decodeUserInfo()
-            }
+            method: 'GET'
         })
+        that.auth.sessionId = data
+        wepy.setStorageSync('sessionId', data)
+        that.decodeUserInfo()
     }
 
-    decodeUserInfo = () => {
+    decodeUserInfo = async () => {
         let that = this
-        wx.request({
+        let {data} = await wepy.request({
             url: that.API_SERVER + 'decrypt.php',
             data: {
                 encryptedData: that.auth.encryptedData,
                 iv: that.auth.iv,
-                session: wx.getStorageSync('sessionId')
+                session: wepy.getStorageSync('sessionId')
             },
             method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            // header: {}, // 设置请求的 header
-            success: function(res) {
-                let todayStep = res.data.stepInfoList.pop()
-                that.weRun.step = todayStep.step
-                that.$apply()
-            }
+            // header: {}, // request header
         })
+        let todayStep = data.stepInfoList.pop()
+        that.steps = todayStep.step
+        that.$apply()
     }
 
-    getUserStep() {
+    async getUserStep() {
         let me = this
-        wx.login({
-            success: function(res) {
-                let code = res.code
-                me.$apply(() => {
-                    me.auth.code = code
-                })
-                wx.getWeRunData({
-                    //解密微信运动
-                    success(res) {
-                        const wRunEncryptedData = res.encryptedData
-                        me.auth.encryptedData = wRunEncryptedData
-                        me.auth.iv = res.iv
-                        me.$apply()
-                        me.get3rdSession() //解密请求函数
-                    }
-                })
-            }
+        let { code } = await wepy.login()
+        me.$apply(() => {
+            me.auth.code = code
         })
-    }
-
-    onLoad () {
-        this.getUserStep()
+        const { encryptedData, iv } = await wepy.getWeRunData()
+        Object.assign(me.auth, { encryptedData, iv })
+        me.$apply()
+        me.get3rdSession()
     }
 }
 

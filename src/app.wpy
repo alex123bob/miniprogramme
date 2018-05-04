@@ -27,8 +27,8 @@ export default class extends wepy.app {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'Upbeat',
-      navigationBarTextStyle: 'black'
-      // enablePullDownRefresh: true
+      navigationBarTextStyle: 'black',
+      enablePullDownRefresh: true
     },
     tabBar: {
       color: '#929292',
@@ -56,11 +56,11 @@ export default class extends wepy.app {
         }
       ]
     }
-  };
+  }
 
   globalData = {
     userInfo: null
-  };
+  }
 
   constructor() {
     super();
@@ -74,11 +74,22 @@ export default class extends wepy.app {
 
   onPageNotFound(res) {
     wx.redirectTo({
-      url: 'pages/index',
+      url: 'pages/home',
       success: function(res){
         // success
       }
     })
+  }
+
+  onPullDownRefresh() {
+    wepy.showNavigationBarLoading() 
+    setTimeout(()=>{
+      this.getData = '数据拿到了'
+      console.log(this.getData)
+      wepy.stopPullDownRefresh()
+      wepy.hideNavigationBarLoading()
+      this.$apply()
+    },3000)
   }
 
   sleep(s) {

@@ -63,11 +63,15 @@ export default class extends wepy.page {
         }
     }
 
-  async onLoad() {
-    let res = await wepy.getSystemInfo();
+    onShow() {
+        this.$broadcast('home-page-displayed')
+    }
 
-    this.sliderLeft = (res.windowWidth / this.tabs.length - sliderWidth) / 2;
-    this.sliderOffset = res.windowWidth / this.tabs.length * this.activeIndex;
-  }
+    async onLoad() {
+        let res = await wepy.getSystemInfo();
+
+        this.sliderLeft = (res.windowWidth / this.tabs.length - sliderWidth) / 2;
+        this.sliderOffset = res.windowWidth / this.tabs.length * this.activeIndex;
+    }
 }
 </script>
