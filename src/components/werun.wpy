@@ -21,6 +21,10 @@ import ServerConfig from '../mixins/server_config'
 export default class WeRun extends wepy.component {
     mixins = [ServerConfig]
 
+    components = {
+        panel: Panel
+    }
+
     data = {
         auth: {
             code: undefined,
@@ -29,42 +33,44 @@ export default class WeRun extends wepy.component {
             sessionId: undefined
         },
         weRun: {
-            panel: Panel,
             step: 0
         }
     }
 
-    get3rdSession() {
+    methods = {
+    }
+
+    get3rdSession = () => {
         let that = this
         wx.request({
             url: that.API_SERVER + 'login.php',
             data: {
-                code: this.data.auth.code
+                code: this.auth.code
             },
             method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
             success: function(res) {
                 var sessionId = res.data
-                that.data.auth.sessionId = sessionId
+                that.auth.sessionId = sessionId
                 wx.setStorageSync('sessionId', sessionId)
                 that.decodeUserInfo()
             }
         })
     }
 
-    decodeUserInfo() {
+    decodeUserInfo = () => {
         let that = this
         wx.request({
             url: that.API_SERVER + 'decrypt.php',
             data: {
-                encryptedData: that.data.auth.encryptedData,
-                iv: that.data.auth.iv,
+                encryptedData: that.auth.encryptedData,
+                iv: that.auth.iv,
                 session: wx.getStorageSync('sessionId')
             },
             method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
             // header: {}, // 设置请求的 header
             success: function(res) {
                 let todayStep = res.data.stepInfoList.pop()
-                that.data.weRun.step = todayStep.step
+                that.weRun.step = todayStep.step
                 that.$apply()
             }
         })
@@ -76,14 +82,14 @@ export default class WeRun extends wepy.component {
             success: function(res) {
                 let code = res.code
                 me.$apply(() => {
-                    me.data.auth.code = code
+                    me.auth.code = code
                 })
                 wx.getWeRunData({
                     //解密微信运动
                     success(res) {
                         const wRunEncryptedData = res.encryptedData
-                        me.data.auth.encryptedData = wRunEncryptedData
-                        me.data.auth.iv = res.iv
+                        me.auth.encryptedData = wRunEncryptedData
+                        me.auth.iv = res.iv
                         me.$apply()
                         me.get3rdSession() //解密请求函数
                     }

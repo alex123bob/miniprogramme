@@ -51,7 +51,7 @@ export default class extends wepy.page {
 
     data = {
         tabs: ['选项一', '选项二', '选项三'],
-        activeIndex: 1,
+        activeIndex: 0,
         sliderOffset: 0,
         sliderLeft: 0
     }
