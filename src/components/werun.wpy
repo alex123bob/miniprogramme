@@ -76,7 +76,7 @@ export default class WeRun extends wepy.component {
         })
     }
 
-    onLoad() {
+    getUserStep() {
         let me = this
         wx.login({
             success: function(res) {
@@ -96,6 +96,10 @@ export default class WeRun extends wepy.component {
                 })
             }
         })
+    }
+
+    onLoad () {
+        this.getUserStep()
     }
 }
 
