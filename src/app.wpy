@@ -24,7 +24,8 @@ export default class extends wepy.app {
   config = {
     pages: ['pages/home', 'pages/contacts', 'pages/panel'],
     window: {
-      backgroundTextStyle: 'light',
+      // enable dots displayed. light background will hide dots coz the color of them are so close.
+      backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'Upbeat',
       navigationBarTextStyle: 'black',
@@ -79,17 +80,6 @@ export default class extends wepy.app {
         // success
       }
     })
-  }
-
-  onPullDownRefresh() {
-    wepy.showNavigationBarLoading() 
-    setTimeout(()=>{
-      this.getData = '数据拿到了'
-      console.log(this.getData)
-      wepy.stopPullDownRefresh()
-      wepy.hideNavigationBarLoading()
-      this.$apply()
-    },3000)
   }
 
   sleep(s) {

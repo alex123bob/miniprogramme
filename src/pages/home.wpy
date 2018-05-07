@@ -63,6 +63,14 @@ export default class extends wepy.page {
         }
     }
 
+    onPullDownRefresh() {
+        wepy.showNavigationBarLoading() 
+        setTimeout(()=>{
+            wepy.stopPullDownRefresh()
+            wepy.hideNavigationBarLoading()
+        },3000)
+    }
+
     onShow() {
         this.$broadcast('home-page-displayed')
     }
