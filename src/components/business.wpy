@@ -1,0 +1,107 @@
+<template>
+    <view class="container">
+        <panel>
+            <view slot="title">
+                业务列表
+            </view>
+        </panel>
+
+        <panel>
+            <text slot="title">   </text>
+            <view slot="content">
+                <text class="info" hidden="{{!isLoading}}" slot="content">加载业务列表...</text>
+
+                <view hidden="{{isLoading}}">
+                    <repeat for="{{businessList}}" key="index" index="index" item="item">
+                        <view class="weui-cells weui-cells_after-title">
+                            <view class="weui-cell">
+                                <view class="weui-cell__bd">{{item.name}}</view>
+                                <view class="weui-cell__ft">{{item.address}}</view>
+                            </view>
+                        </view>
+                    </repeat>
+                </view>
+
+            </view>
+        </panel>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Panel from './panel'
+import List from '../example/list'
+import ServerConfig from '../mixins/server_config'
+
+export default class Business extends wepy.component {
+    mixins = [ServerConfig]
+
+    components = {
+        panel: Panel,
+        list: List
+    }
+
+    data = {
+        isLoading: true,
+        isFetched: false,
+        businessList: []
+    }
+
+    events = {
+        'active-tab': (...args) => {
+            let index = args[0];
+            if (1 == index) {
+                this.fetchBusinessList()
+            }
+        },
+        'tab-refreshing': (...args) => {
+            this.refresh();
+        }
+    }
+
+    fetchBusinessList = async (force) => {
+      if (this.isFetched && !force) {
+          return 'cached';
+      }
+      let me = this;
+      me.isLoading = true;
+      me.$apply();
+      let {data} = await wepy.request({
+          url: 'https://dqjczs.sinaapp.com/libs/business.php',
+          data: {
+              action: 'getBusinessAggregation',
+              isDead: false,
+              isFrozen: false,
+              isWaiting: false,
+              page: 1,
+              start: 0,
+              limit: 25,
+              debug: true
+          },
+          method: 'GET'
+      })
+      me.isLoading = false;
+      if (data.data) {
+          me.businessList = data.data;
+          me.isFetched = true;
+          me.$apply();
+      }
+      else {
+          me.businessList = '获取失败';
+          me.$apply()
+      }
+      return Promise.resolve('finished')
+    }
+
+    refresh = async () => {
+        let status = await this.fetchBusinessList(true);
+        if (status === 'finished') {
+            this.$emit('stop-tab-refreshing');
+        }
+    }
+
+    methods = {
+    }
+}
+
+</script>

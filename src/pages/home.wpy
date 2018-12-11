@@ -27,7 +27,9 @@
                     <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
                         <werun />
                     </view>
-                    <view class="weui-tab__content" hidden="{{activeIndex != 1}}">选项二的内容</view>
+                    <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+                        <business />
+                    </view>
                     <view class="weui-tab__content" hidden="{{activeIndex != 2}}">选项三的内容</view>
                 </view>
             </view>
@@ -38,6 +40,7 @@
 <script>
 import wepy from 'wepy'
 import WeRun from '../components/werun'
+import Business from '../components/business'
 const sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 
 export default class extends wepy.page {
@@ -46,7 +49,14 @@ export default class extends wepy.page {
     }
 
     components = {
-        werun: WeRun
+        werun: WeRun,
+        business: Business
+    }
+
+    events = {
+        'stop-tab-refreshing': (...args) => {
+            this.stopPullDownRefresh();
+        }
     }
 
     data = {
@@ -60,15 +70,21 @@ export default class extends wepy.page {
         tabClick (e) {
             this.sliderOffset = e.currentTarget.offsetLeft;
             this.activeIndex = e.currentTarget.id;
+            this.$broadcast('active-tab', this.activeIndex);
         }
     }
 
     onPullDownRefresh() {
-        wepy.showNavigationBarLoading() 
+        wepy.showNavigationBarLoading();
+        this.$broadcast('tab-refreshing');
         setTimeout(()=>{
-            wepy.stopPullDownRefresh()
-            wepy.hideNavigationBarLoading()
-        },3000)
+            
+        },3000);
+    }
+
+    stopPullDownRefresh() {
+        wepy.stopPullDownRefresh();
+        wepy.hideNavigationBarLoading();
     }
 
     onShow() {

@@ -22,6 +22,8 @@
   import wepy from 'wepy'
 
   export default class List extends wepy.component {
+    mixins = [ServerConfig]
+    
     data = {
       list: [
         {
@@ -32,10 +34,10 @@
     }
 
     events = {
-      'index-broadcast': (...args) => {
-        let $event = args[args.length - 1]
-        console.log(`${this.$name} receive ${$event.name} from ${$event.source.name}`)
-      }
+        'active-tab': (...args) => {
+        },
+        'home-page-displayed': (...args) => {
+        }
     }
 
     methods = {
@@ -49,7 +51,13 @@
       }
     }
 
+    fetchBusinessList = async () => {
+      let data = await fetch('https://dqjczs.sinaapp.com/libs/business.php?action=getBusinessAggregation&isDead=false&isFrozen=false&isWaiting=false&page=1&start=0&limit=25&debug=4').then(data=>data.json())
+      return data
+    }
+
     onLoad () {
+      console.log('on show')
     }
   }
 </script>
