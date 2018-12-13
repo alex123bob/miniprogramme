@@ -1,3 +1,14 @@
+<style lang="less">
+    .weui-cells {
+        .weui-cell {
+            font-size: 14px;
+            .weui-cell__bd {
+                text-align: left;
+            }
+        }
+    }
+</style>
+
 <template>
     <view class="container">
         <panel>
