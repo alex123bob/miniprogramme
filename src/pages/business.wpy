@@ -40,7 +40,7 @@
 
 <script>
 import wepy from 'wepy'
-import Panel from './panel'
+import Panel from '../components/panel'
 import List from '../example/list'
 import ServerConfig from '../mixins/server_config'
 

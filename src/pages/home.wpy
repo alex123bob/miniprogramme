@@ -39,8 +39,8 @@
 
 <script>
 import wepy from 'wepy'
-import WeRun from '../components/werun'
-import Business from '../components/business'
+import WeRun from './werun'
+import Business from './business'
 const sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 
 export default class extends wepy.page {

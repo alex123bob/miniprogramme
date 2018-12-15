@@ -15,7 +15,7 @@
 
 <script>
 import wepy from 'wepy'
-import Panel from './panel'
+import Panel from '../components/panel'
 import ServerConfig from '../mixins/server_config'
 
 export default class WeRun extends wepy.component {
